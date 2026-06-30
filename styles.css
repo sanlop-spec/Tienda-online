@@ -1,0 +1,199 @@
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --bg:        #16140F;
+  --surface:   #221F18;
+  --ink:       #F5F1E8;
+  --line:      #36322A;
+  --accent:    #E8533D; /* terracota/coral — sello principal */
+  --accent-2:  #F2C14E; /* mostaza — etiquetas de existencia */
+}
+
+/* Conectamos los tokens con utilidades de Tailwind via clases custom */
+.bg-bg{ background-color: var(--bg); }
+.bg-surface{ background-color: var(--surface); }
+.text-ink{ color: var(--ink); }
+.border-line{ border-color: var(--line); }
+.text-accent{ color: var(--accent); }
+.bg-accent{ background-color: var(--accent); }
+.bg-ink{ background-color: var(--ink); }
+.font-display{ font-family: 'Syne', sans-serif; }
+.font-mono{ font-family: 'DM Mono', monospace; }
+
+*{ box-sizing: border-box; }
+html, body{ background: var(--bg); color: var(--ink); }
+body{ font-family: 'DM Mono', monospace; }
+
+::selection{ background: var(--accent); color: var(--bg); }
+
+/* scrollbars discretos */
+*::-webkit-scrollbar{ width: 6px; }
+*::-webkit-scrollbar-thumb{ background: var(--line); border-radius: 4px; }
+
+/* ============================================================
+   TARJETA DE PRODUCTO
+   ============================================================ */
+.product-card{
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: border-color .2s ease, transform .2s ease;
+}
+.product-card:hover{
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.product-img-wrap{
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #0F0D09;
+  overflow: hidden;
+}
+.product-img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.stock-tag{
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--accent-2);
+  color: #1A1606;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 999px;
+}
+
+.size-select{
+  max-width: 60%;
+}
+
+/* ============================================================
+   BOTÓN FLOTANTE DEL CARRITO — forma de "ticket" girado
+   ============================================================ */
+.cart-fab{
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  z-index: 40;
+  width: 58px;
+  height: 58px;
+  background: var(--accent);
+  color: var(--bg);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,.35);
+  transform: rotate(-4deg);
+  transition: transform .25s ease;
+  border: none;
+  cursor: pointer;
+}
+.cart-fab:hover{ transform: rotate(0deg) scale(1.05); }
+
+.cart-count{
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--ink);
+  color: var(--bg);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg);
+}
+
+/* ============================================================
+   OVERLAY + CAJÓN DEL CARRITO (estilo recibo de papel)
+   ============================================================ */
+.cart-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  z-index: 45;
+  opacity: 0;
+  transition: opacity .25s ease;
+}
+.cart-overlay.visible{ opacity: 1; }
+.cart-overlay.hidden{ display: none; }
+
+.cart-drawer{
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  max-width: 400px;
+  z-index: 50;
+  transform: translateX(100%);
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+}
+.cart-drawer.open{ transform: translateX(0); }
+
+.receipt{
+  height: 100%;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--line);
+  position: relative;
+}
+
+/* perforación decorativa en la parte superior, como un recibo arrancado */
+.receipt-perforation{
+  height: 10px;
+  width: 100%;
+  background-image: radial-gradient(circle, var(--bg) 3px, transparent 3.5px);
+  background-size: 16px 10px;
+  background-position: top center;
+  background-repeat: repeat-x;
+}
+
+.receipt-divider{
+  border-top: 1px dashed var(--line);
+  margin: 0 24px;
+}
+
+.cart-item{ position: relative; }
+.cart-item-img{ background: #0F0D09; }
+
+.qty-btn{
+  color: var(--ink);
+  background: transparent;
+  cursor: pointer;
+  transition: border-color .15s ease, color .15s ease;
+}
+.remove-btn{ cursor: pointer; }
+
+/* ============================================================
+   RESPONSIVO
+   ============================================================ */
+@media (max-width: 480px){
+  .cart-drawer{ max-width: 100%; }
+}
+
+/* respeta preferencias de movimiento reducido */
+@media (prefers-reduced-motion: reduce){
+  .product-card, .cart-fab, .cart-drawer, .cart-overlay{
+    transition: none !important;
+  }
+}
